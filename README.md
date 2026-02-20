@@ -73,7 +73,7 @@ If you do not want to build `tests` target, add `-BUILD_TESTING=OFF` option.
 
 ## Create the configuration file of gNodeB
 
-Get [gNB config](https://docs.srsran.com/projects/project/en/latest/_downloads/a7c34dbfee2b765503a81edd2f02ec22/gnb_zmq.yaml) of [ZeroMQ-based Setup](https://docs.srsran.com/projects/project/en/latest/tutorials/source/srsUE/source/index.html#zeromq-based-setup) for OCUDU as the original file.
+Get [gNB config](https://docs.srsran.com/projects/project/en/latest/_downloads/a7c34dbfee2b765503a81edd2f02ec22/gnb_zmq.yaml) of [ZeroMQ-based Setup](https://docs.srsran.com/projects/project/en/latest/tutorials/source/srsUE/source/index.html#zeromq-based-setup) for srsRAN_Project as the original file.
 ```
 # cd ocudu/build/apps/gnb
 # wget <link of "gNB config">
