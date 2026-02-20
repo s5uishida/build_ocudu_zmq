@@ -2,9 +2,9 @@
 [OCUDU](https://gitlab.com/ocudu/ocudu) is a permissively-licensed, open-source 5G (and beyond) CU/DU project designed for commercial deployment and broad industry adoption, as well as advanced research and development. Therefore, in order to confirm the facilities of 5GC, I will describe the simple procedure for building the virtual gNodeB instead of the real device.
 
 Please refer to the following for building OCUDU 5G RAN with ZeroMQ.
-- Installation Guide - https://ocudu-docs-604e90.gitlab.io/user_manual/installation/
-- ZeroMQ-based Setup - https://ocudu-docs-604e90.gitlab.io/user_manual/tutorials/srsue/#zeromq-based-setup
-- Configuration Reference - https://ocudu-docs-604e90.gitlab.io/user_manual/config_reference/#configuration-reference-1
+- Installation Guide - https://docs.ocudu.org/user_manual/installation/
+- ZeroMQ-based Setup - https://docs.ocudu.org/user_manual/tutorials/srsue/#zeromq-based-setup
+- Configuration Reference - https://docs.ocudu.org/user_manual/config_reference/#configuration-reference-1
 
 The specification of the VM that have been confirmed to work is as follows.
 | OS | CPU (Min) | Memory (Min) | HDD (Min) |
