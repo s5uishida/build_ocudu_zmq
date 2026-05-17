@@ -201,6 +201,7 @@ I simply confirmed the operation of the following versions.
 
 | Version | Commit | Date | Issues |
 | --- | --- | --- | -- |
+| 26.04+ | `2563975a74baf94db51b4a41d6ff48e945cbb8f7` | 2026.05.15 | 1 |
 | 26.04+ | `77512ff345e0888da0ad63b535b66ed75abf03c8` | 2026.03.24 | 1 |
 | -- | `b8e3be1e489dcbec3bb3c12e4d291c1d95b9cec0` | 2026.02.19 | 1 |
 
@@ -215,5 +216,6 @@ I simply confirmed the operation of the following versions.
 
 ## Changelog (summary)
 
+- [2026.05.17] Updated a list of confirmed versions.
 - [2026.04.01] Updated a list of confirmed versions.
 - [2026.02.20] Initial release.
