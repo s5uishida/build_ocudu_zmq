@@ -3,7 +3,7 @@
 
 Please refer to the following for building OCUDU 5G RAN with ZeroMQ.
 - Installation Guide - https://docs.ocudu.org/user_manual/installation/
-- ZeroMQ-based Setup - https://docs.ocudu.org/user_manual/tutorials/srsue/#zeromq-based-setup
+- ZeroMQ-based Setup - https://docs.ocudu.org/tutorials/srsue/#zeromq-based-setup
 - Configuration Reference - https://docs.ocudu.org/user_manual/config_reference/#configuration-reference-1
 
 The specification of the VM that have been confirmed to work is as follows.
