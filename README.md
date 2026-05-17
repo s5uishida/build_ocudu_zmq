@@ -77,12 +77,12 @@ If you do not want to build `tests` target, add `-BUILD_TESTING=OFF` option.
 
 ## Create the configuration file of gNodeB
 
-Get [gNB config](https://docs.srsran.com/projects/project/en/latest/_downloads/a7c34dbfee2b765503a81edd2f02ec22/gnb_zmq.yaml) of [ZeroMQ-based Setup](https://docs.srsran.com/projects/project/en/latest/tutorials/source/srsUE/source/index.html#zeromq-based-setup) for srsRAN_Project as the original file.
+Get [gnb_zmq.yaml](https://github.com/srsran/srsRAN_Project_docs/blob/main/docs/source/tutorials/source/srsUE/source/.config/gnb_zmq.yaml) for srsRAN_Project as the original file.
 ```
 # cd ocudu/build/apps/gnb
-# wget <link of "gNB config">
+# wget https://raw.githubusercontent.com/srsran/srsRAN_Project_docs/refs/heads/main/docs/source/tutorials/source/srsUE/source/.config/gnb_zmq.yaml
 ```
-For reference, `gnb_zmq.yaml` on 2025.01.15 is as follows.
+For reference, `gnb_zmq.yaml` on 2025.01.09 is as follows.
 ```yaml
 # This configuration file example shows how to configure the srsRAN Project gNB to allow srsUE to connect to it. 
 # This specific example uses ZMQ in place of a USRP for the RF-frontend, and creates an FDD cell with 10 MHz bandwidth. 
