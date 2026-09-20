@@ -29,6 +29,7 @@ Also, when connecting by 5G NR-UE with ZeroMQ, see [here](https://github.com/s5u
 - [Clone OCUDU](#clone_ocudu)
 - [Build OCUDU 5G RAN](#build)
 - [Create the configuration file of gNodeB](#create_gnb_config)
+  - [Set ZeroMQ virtual radio driver channel gain to <= 0 dB](#gain)
   - [Add a Slice configuration](#add_slice)
 - [Issues](#issues)
 - [Confirmed Version List](#ver_list)
@@ -174,13 +175,27 @@ When setting the IP address of the N3 interface, add the following parameter and
    device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=23.04e6 # Optionally pass arguments to the selected RF driver.
 ```
 
+<a id="gain"></a>
+
+### Set ZeroMQ virtual radio driver channel gain to <= 0 dB
+
+When using the ZeroMQ virtual radio driver, the channel gain must be set to 0.0 dB or less.
+```yaml
+ru_sdr:
+  device_driver: zmq                # The RF driver name.
+  device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=23.04e6 # Optionally pass arguments to the selected RF driver.
+  srate: 23.04                      # RF sample rate might need to be adjusted according to selected bandwidth.
+  tx_gain: 0 <--                    # Transmit gain of the RF might need to adjusted to the given situation.
+  rx_gain: 0 <--                    # Receive gain of the RF might need to adjusted to the given situation.
+```
+
 <a id="add_slice"></a>
 
 ### Add a Slice configuration
 
 The following SST/SD values are in decimal notation.
 For example, SST=0x1 and SD=0x010203 are expressed in decimal as follows.
-```diff
+```yaml
 cu_cp:
   amf:
     addr: 10.53.1.2                 # The address or hostname of the AMF.
@@ -213,6 +228,7 @@ I simply confirmed the operation of the following versions.
 
 | Version | Commit | Date | Issues |
 | --- | --- | --- | -- |
+| 26.04+ | `c82434f8937f9a3108581d2525fb2f831e4605e3` | 2026.09.15 | 1 |
 | 26.04+ | `2563975a74baf94db51b4a41d6ff48e945cbb8f7` | 2026.05.12 | 1 |
 | 26.04+ | `77512ff345e0888da0ad63b535b66ed75abf03c8` | 2026.03.24 | 1 |
 | -- | `b8e3be1e489dcbec3bb3c12e4d291c1d95b9cec0` | 2026.02.19 | 1 |
@@ -228,6 +244,7 @@ I simply confirmed the operation of the following versions.
 
 ## Changelog (summary)
 
+- [2026.09.21] Updated a list of confirmed versions.
 - [2026.05.17] Updated a list of confirmed versions.
 - [2026.04.01] Updated a list of confirmed versions.
 - [2026.02.20] Initial release.
