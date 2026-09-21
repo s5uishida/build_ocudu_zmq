@@ -216,37 +216,18 @@ cu_cp:
 
 ### Configuration changes for my case
 
-In my case, examples of the configuration changes are as follows.
+In my case, basic examples of the configuration changes are as follows.
 ```diff
 --- gnb_zmq.yaml.orig   2026-09-21 20:57:56.820335969 +0900
-+++ gnb_zmq.yaml        2026-09-21 21:54:04.300983939 +0900
-@@ -6,37 +6,47 @@
- # To run the OCUDU gNB with this config, use the following command:
- #   sudo ./gnb -c gnb_zmq.yaml
- 
-+gnb_id: 0x19B
-+
- cu_cp:
-   amf:
--    addr: 10.53.1.2                 # The address or hostname of the AMF.
-+    addr: 192.168.0.111             # The address or hostname of the AMF.
-     port: 38412
--    bind_addr: 10.53.1.1            # A local IP that the gNB binds to for traffic from the AMF.
-+    bind_addr: 192.168.0.131        # A local IP that the gNB binds to for traffic from the AMF.
-     supported_tracking_areas:
--      - tac: 7
-+      - tac: 1
-         plmn_list:
-           - plmn: "00101"
-             tai_slice_support_list:
++++ gnb_zmq.yaml        2026-09-21 22:56:13.016833065 +0900
+@@ -19,24 +19,31 @@
                - sst: 1
-+                sd: 66051
    inactivity_timer: 7200            # Sets the UE/PDU Session/DRB inactivity timer to 7200 seconds. Supported: [1 - 7200].
  
 +cu_up:
 +  ngu:
 +    socket:                         # Optional TEXT. Defines socket(s) for NG-U interface. Each list entry should begin with "-".
-+      - bind_addr: 192.168.13.131   # Optional TEXT (127.0.0.1). Sets local IP address to bind for N3 interface. Format: IPV4 or IPV6 IP address.
++      - bind_addr: 127.0.0.1        # Optional TEXT (127.0.0.1). Sets local IP address to bind for N3 interface. Format: IPV4 or IPV6 IP address.
 +        bind_interface: auto        # Optional TEXT (auto). Sets network device to bind for N3 interface.
 +        ext_addr: auto              # Optional TEXT (auto). Sets the external IP address for N3 traffic. "auto" uses bind_addr.
 +
@@ -266,8 +247,7 @@ In my case, examples of the configuration changes are as follows.
 +  channel_bandwidth_MHz: 20         # Bandwith in MHz. Number of PRBs will be automatically derived.
    common_scs: 15                    # Subcarrier spacing in kHz used for data.
    plmn: "00101"                     # PLMN broadcasted by the gNB.
--  tac: 7                            # Tracking area code (needs to match the core configuration).
-+  tac: 1                            # Tracking area code (needs to match the core configuration).
+   tac: 7                            # Tracking area code (needs to match the core configuration).
    pdcch:
      common:
        ss0_index: 0                  # Set search space zero index to match srsUE capabilities
