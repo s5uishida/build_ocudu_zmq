@@ -30,6 +30,7 @@ Also, when connecting by 5G NR-UE with ZeroMQ, see [here](https://github.com/s5u
 - [Build OCUDU 5G RAN](#build)
 - [Create the configuration file of gNodeB](#create_gnb_config)
   - [Add a Slice configuration](#add_slice)
+  - [Configuration changes for my case](#my_conf)
 - [Issues](#issues)
 - [Confirmed Version List](#ver_list)
 - [Sample Configurations](#sample_conf)
@@ -77,16 +78,19 @@ If you do not want to build `tests` target, add `-BUILD_TESTING=OFF` option.
 
 ## Create the configuration file of gNodeB
 
-Get [gnb_zmq.yaml](https://github.com/srsran/srsRAN_Project_docs/blob/main/docs/source/tutorials/source/srsUE/source/.config/gnb_zmq.yaml) for srsRAN_Project as the original file.
+Get [gnb_zmq.yaml](https://gitlab.com/ocudu/ocudu_docs/-/blob/main/docs/tutorials/srsue/assets/gnb_zmq.yaml) as the original file.
 ```
 # cd ocudu/build/apps/gnb
-# wget https://raw.githubusercontent.com/srsran/srsRAN_Project_docs/refs/heads/main/docs/source/tutorials/source/srsUE/source/.config/gnb_zmq.yaml
+# wget https://gitlab.com/ocudu/ocudu_docs/-/raw/main/docs/tutorials/srsue/assets/gnb_zmq.yaml
 ```
-For reference, `gnb_zmq.yaml` on 2025.01.09 is as follows.
+For reference, `gnb_zmq.yaml` on 2026.06.16 is as follows.
 ```yaml
-# This configuration file example shows how to configure the srsRAN Project gNB to allow srsUE to connect to it. 
-# This specific example uses ZMQ in place of a USRP for the RF-frontend, and creates an FDD cell with 10 MHz bandwidth. 
-# To run the srsRAN Project gNB with this config, use the following command: 
+# SPDX-FileCopyrightText: Copyright (C) 2021-2026 Software Radio Systems Limited
+# SPDX-License-Identifier: BSD-3-Clause-Open-MPI
+
+# This configuration file example shows how to configure the OCUDU gNB to allow srsUE to connect to it.
+# This specific example uses ZMQ in place of a USRP for the RF-frontend, and creates an FDD cell with 10 MHz bandwidth.
+# To run the OCUDU gNB with this config, use the following command:
 #   sudo ./gnb -c gnb_zmq.yaml
 
 cu_cp:
@@ -104,27 +108,30 @@ cu_cp:
 
 ru_sdr:
   device_driver: zmq                # The RF driver name.
-  device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=23.04e6 # Optionally pass arguments to the selected RF driver.
-  srate: 23.04                      # RF sample rate might need to be adjusted according to selected bandwidth.
-  tx_gain: 75                       # Transmit gain of the RF might need to adjusted to the given situation.
-  rx_gain: 75                       # Receive gain of the RF might need to adjusted to the given situation.
+  device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=11.52e6 # Optionally pass arguments to the selected RF driver.
+  srate: 11.52                      # RF sample rate might need to be adjusted according to selected bandwidth.
+  tx_gain: 0                        # Transmit gain of the RF might need to adjusted to the given situation.
+  rx_gain: 0                        # Receive gain of the RF might need to adjusted to the given situation.
 
 cell_cfg:
   dl_arfcn: 368500                  # ARFCN of the downlink carrier (center frequency).
   band: 3                           # The NR band.
-  channel_bandwidth_MHz: 20         # Bandwith in MHz. Number of PRBs will be automatically derived.
+  channel_bandwidth_MHz: 10         # Bandwith in MHz. Number of PRBs will be automatically derived.
   common_scs: 15                    # Subcarrier spacing in kHz used for data.
   plmn: "00101"                     # PLMN broadcasted by the gNB.
   tac: 7                            # Tracking area code (needs to match the core configuration).
   pdcch:
     common:
       ss0_index: 0                  # Set search space zero index to match srsUE capabilities
-      coreset0_index: 12            # Set search CORESET Zero index to match srsUE capabilities
+      coreset0_index: 6             # Set search CORESET Zero index to match srsUE capabilities
     dedicated:
       ss2_type: common              # Search Space type, has to be set to common
       dci_format_0_1_and_1_1: false # Set correct DCI format (fallback)
   prach:
     prach_config_index: 1           # Sets PRACH config to match what is expected by srsUE
+    total_nof_ra_preambles: 64      # Sets number of available PRACH preambles
+    nof_ssb_per_ro: 1               # Sets the number of SSBs per RACH occasion.
+    nof_cb_preambles_per_ssb: 64    # Sets the number of contention based preambles per SSB.
   pdsch:
     mcs_table: qam64                # Sets PDSCH MCS to 64 QAM
   pusch:
@@ -158,29 +165,29 @@ First, when using the ZeroMQ virtual radio driver, the channel gain must be set 
 ```yaml
 ru_sdr:
   device_driver: zmq                # The RF driver name.
-  device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=23.04e6 # Optionally pass arguments to the selected RF driver.
-  srate: 23.04                      # RF sample rate might need to be adjusted according to selected bandwidth.
+  device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=11.52e6 # Optionally pass arguments to the selected RF driver.
+  srate: 11.52                      # RF sample rate might need to be adjusted according to selected bandwidth.
   tx_gain: 0 <--                    # Transmit gain of the RF might need to adjusted to the given situation.
   rx_gain: 0 <--                    # Receive gain of the RF might need to adjusted to the given situation.
 ```
 And when setting the IP address of the N3 interface, add the following parameter and set the appropriate IP address.
 ```diff
---- gnb_zmq.yaml.orig   2025-01-15 18:27:10.000000000 +0900
-+++ gnb_zmq.yaml        2026-02-20 10:19:35.831332416 +0900
-@@ -16,6 +16,13 @@
+--- gnb_zmq.yaml.orig   2026-09-21 20:57:56.820335969 +0900
++++ gnb_zmq.yaml        2026-09-21 21:46:20.050396209 +0900
+@@ -19,6 +19,13 @@
                - sst: 1
    inactivity_timer: 7200            # Sets the UE/PDU Session/DRB inactivity timer to 7200 seconds. Supported: [1 - 7200].
  
 +cu_up:
 +  ngu:
-+    socket:                               # Define socket(s) for NG-U interface.
-+      - bind_addr: 127.0.3.1              # Optional TEXT (auto). Sets local IP address to bind for N3 interface. Format: IPV4 or IPV6 IP address.
-+        bind_interface: auto              # Optional TEXT (auto). Network device to bind for N3 interface
-+        ext_addr: auto                    # Optional TEXT (auto). Sets external IP address that is advertised to receive GTP-U packets from UPF via N3 interface.
++    socket:                         # Optional TEXT. Defines socket(s) for NG-U interface. Each list entry should begin with "-".
++      - bind_addr: 127.0.0.1        # Optional TEXT (127.0.0.1). Sets local IP address to bind for N3 interface. Format: IPV4 or IPV6 IP address.
++        bind_interface: auto        # Optional TEXT (auto). Sets network device to bind for N3 interface.
++        ext_addr: auto              # Optional TEXT (auto). Sets the external IP address for N3 traffic. "auto" uses bind_addr.
 +
  ru_sdr:
    device_driver: zmq                # The RF driver name.
-   device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=23.04e6 # Optionally pass arguments to the selected RF driver.
+   device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=11.52e6 # Optionally pass arguments to the selected RF driver.
 ```
 
 <a id="add_slice"></a>
@@ -203,6 +210,72 @@ cu_cp:
 -->           - sst: 1
 -->             sd: 66051
   inactivity_timer: 7200            # Sets the UE/PDU Session/DRB inactivity timer to 7200 seconds. Supported: [1 - 7200].
+```
+
+<a id="my_conf"></a>
+
+### Configuration changes for my case
+
+In my case, the changes to the configuration are as follows.
+```diff
+--- gnb_zmq.yaml.orig   2026-09-21 20:57:56.820335969 +0900
++++ gnb_zmq.yaml        2026-09-21 21:54:04.300983939 +0900
+@@ -6,37 +6,47 @@
+ # To run the OCUDU gNB with this config, use the following command:
+ #   sudo ./gnb -c gnb_zmq.yaml
+ 
++gnb_id: 0x19B
++
+ cu_cp:
+   amf:
+-    addr: 10.53.1.2                 # The address or hostname of the AMF.
++    addr: 192.168.0.111             # The address or hostname of the AMF.
+     port: 38412
+-    bind_addr: 10.53.1.1            # A local IP that the gNB binds to for traffic from the AMF.
++    bind_addr: 192.168.0.131        # A local IP that the gNB binds to for traffic from the AMF.
+     supported_tracking_areas:
+-      - tac: 7
++      - tac: 1
+         plmn_list:
+           - plmn: "00101"
+             tai_slice_support_list:
+               - sst: 1
++                sd: 66051
+   inactivity_timer: 7200            # Sets the UE/PDU Session/DRB inactivity timer to 7200 seconds. Supported: [1 - 7200].
+ 
++cu_up:
++  ngu:
++    socket:                         # Optional TEXT. Defines socket(s) for NG-U interface. Each list entry should begin with "-".
++      - bind_addr: 192.168.13.131   # Optional TEXT (127.0.0.1). Sets local IP address to bind for N3 interface. Format: IPV4 or IPV6 IP address.
++        bind_interface: auto        # Optional TEXT (auto). Sets network device to bind for N3 interface.
++        ext_addr: auto              # Optional TEXT (auto). Sets the external IP address for N3 traffic. "auto" uses bind_addr.
++
+ ru_sdr:
+   device_driver: zmq                # The RF driver name.
+-  device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=11.52e6 # Optionally pass arguments to the selected RF driver.
+-  srate: 11.52                      # RF sample rate might need to be adjusted according to selected bandwidth.
++  device_args: tx_port=tcp://127.0.0.1:2000,rx_port=tcp://127.0.0.1:2001,base_srate=23.04e6 # Optionally pass arguments to the selected RF driver.
++  srate: 23.04                      # RF sample rate might need to be adjusted according to selected bandwidth.
+   tx_gain: 0                        # Transmit gain of the RF might need to adjusted to the given situation.
+   rx_gain: 0                        # Receive gain of the RF might need to adjusted to the given situation.
+ 
+ cell_cfg:
+   dl_arfcn: 368500                  # ARFCN of the downlink carrier (center frequency).
+   band: 3                           # The NR band.
+-  channel_bandwidth_MHz: 10         # Bandwith in MHz. Number of PRBs will be automatically derived.
++  channel_bandwidth_MHz: 20         # Bandwith in MHz. Number of PRBs will be automatically derived.
+   common_scs: 15                    # Subcarrier spacing in kHz used for data.
+   plmn: "00101"                     # PLMN broadcasted by the gNB.
+-  tac: 7                            # Tracking area code (needs to match the core configuration).
++  tac: 1                            # Tracking area code (needs to match the core configuration).
+   pdcch:
+     common:
+       ss0_index: 0                  # Set search space zero index to match srsUE capabilities
+-      coreset0_index: 6             # Set search CORESET Zero index to match srsUE capabilities
++      coreset0_index: 12            # Set search CORESET Zero index to match srsUE capabilities
+     dedicated:
+       ss2_type: common              # Search Space type, has to be set to common
+       dci_format_0_1_and_1_1: false # Set correct DCI format (fallback)
 ```
 
 <a id="issues"></a>
