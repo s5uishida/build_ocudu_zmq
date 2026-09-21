@@ -216,7 +216,7 @@ cu_cp:
 
 ### Configuration changes for my case
 
-In my case, basic examples of the configuration changes are as follows.
+In my case, **basic examples** of the configuration changes are as follows.
 ```diff
 --- gnb_zmq.yaml.orig   2026-09-21 20:57:56.820335969 +0900
 +++ gnb_zmq.yaml        2026-09-21 22:56:13.016833065 +0900
